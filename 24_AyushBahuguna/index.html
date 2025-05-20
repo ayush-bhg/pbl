@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Process Scheduler Simulator</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-microchip"></i> Process Scheduler Simulator</h1>
+            <div class="theme-toggle">
+                <button id="theme-toggle" type="button" aria-label="Toggle dark/light theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <!-- Box 1: Algorithm Selection and Process Input -->
+            <div class="left-panel">
+                <div class="algorithm-selection">
+                    <h2><i class="fas fa-cogs"></i> Select Algorithms</h2>
+                    <div class="algorithm-select">
+                        <select id="algorithm-select">
+                            <option value="fcfs" selected>First Come First Serve (FCFS)</option>
+                            <option value="sjf">Shortest Job First (SJF)</option>
+                            <option value="srtf">Shortest Remaining Time First (SRTF)</option>
+                            <option value="priority">Priority Scheduling</option>
+                            <option value="roundrobin">Round Robin</option>
+                            <option value="multilevel">Multilevel Queue</option>
+                        </select>
+                    </div>
+
+                    <div id="algorithm-options" class="algorithm-options">
+                        <!-- Mode switch button for algorithms supporting both modes -->
+                        <div id="mode-switch-option" class="algorithm-option hidden">
+                            <button id="mode-switch-btn" class="mode-switch-btn">
+                                <span id="mode-switch-label">Switch to Preemptive Mode</span>
+                            </button>
+                        </div>
+
+                        <!-- Preemptive mode toggle -->
+                        <div id="preemptive-option" class="algorithm-option hidden">
+                            <label class="switch-label">
+                                <span id="preemptive-label">Current Mode: Non-Preemptive</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="preemptive-toggle">
+                                    <span class="slider round"></span>
+                                </label>
+                            </label>
+                        </div>
+
+                        <!-- Priority option for Priority Scheduling -->
+                        <div id="priority-option" class="algorithm-option hidden">
+                            <label class="switch-label">
+                                <span>Higher Number = Higher Priority</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="priority-toggle">
+                                    <span class="slider round"></span>
+                                </label>
+                            </label>
+                        </div>
+
+                        <!-- Time Quantum option for Round Robin -->
+                        <div id="quantum-option" class="algorithm-option hidden">
+                            <label for="time-quantum">Time Quantum:</label>
+                            <input type="number" id="time-quantum" min="1" value="2">
+                        </div>
+                    </div>
+
+                    <div class="process-input">
+                        <h2><i class="fas fa-tasks"></i> Process Details</h2>
+                        <div class="process-templates">
+                            <!-- Removed Random, Worst Case, and Best Case buttons -->
+                        </div>
+                        <div class="process-table">
+                            <div class="process-header">
+                                <div class="header-cell">Process ID</div>
+                                <div class="header-cell priority-header hidden">Priority</div>
+                                <div class="header-cell">Arrival Time</div>
+                                <div class="header-cell">Burst Times</div>
+                            </div>
+                            <div id="processes-container">
+                                <!-- Process inputs will be added here dynamically -->
+                            </div>
+                        </div>
+                        <div class="button-group">
+                            <button id="add-process" class="primary-btn" title="Add a new process">
+                                <i class="fas fa-plus"></i> Add Process
+                            </button>
+                            <button id="calculate" class="primary-btn" title="Calculate schedule">
+                                <i class="fas fa-calculator"></i> Calculate Schedule
+                            </button>
+                            <button id="export-results" class="secondary-btn" title="Export results to CSV">
+                                <i class="fas fa-download"></i> Export Results
+                            </button>
+                            <button id="reset-all" class="secondary-btn" title="Reset all data">
+                                <i class="fas fa-redo"></i> Reset
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Box 2: Results -->
+            <div class="middle-panel">
+                <div class="results">
+                    <div class="metrics">
+                        <h2><i class="fas fa-chart-bar"></i> Performance Metrics</h2>
+                        <div id="metrics-container">
+                            <div class="metric-card">
+                                <h3>Average Waiting Time</h3>
+                                <p id="avg-waiting-time"></p>
+                            </div>
+                            <div class="metric-card">
+                                <h3>Average Turnaround Time</h3>
+                                <p id="avg-turnaround-time"></p>
+                            </div>
+                            <div class="metric-card">
+                                <h3>CPU Utilization</h3>
+                                <p id="cpu-utilization"></p>
+                            </div>
+                            <div class="metric-card">
+                                <h3>Throughput</h3>
+                                <p id="throughput"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="visualization">
+                        <h2><i class="fas fa-chart-line"></i> Visualization</h2>
+                        <div class="tabs">
+                            <button class="gantt-btn tab-btn active" data-tab="gantt">
+                                <i class="fas fa-project-diagram"></i> Gantt Chart
+                            </button>
+                            <button class="timeline-btn tab-btn" data-tab="timeline">
+                                <i class="fas fa-clock"></i> Timeline
+                            </button>
+                        </div>
+                        <div id="gantt-container" class="tab-content active"></div>
+                        <div id="timeline-container" class="tab-content"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Box 3: Algorithm Explanation -->
+            <div class="right-panel">
+                <div class="algorithm-explanation">
+                    <h2><i class="fas fa-info-circle"></i> Algorithm Explanation</h2>
+                    <div id="explanation-content">
+                        Select an algorithm to see its explanation and step-by-step working.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="scheduling.js"></script>
+</body>
+</html>
